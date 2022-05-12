@@ -1,0 +1,27 @@
+program             -> declaration* 'program' block EOF
+func_declaration    -> 'function' function
+function            -> IDENTIFIER '(' parameters? ')' block
+parameters          -> IDENTIFIER (',' IDENTIFIER)*
+block               -> '{' (var_declaration | statement)* '}'
+declaration         -> func_declaration | var_declaration
+var_declaration     -> 'var' IDENTIFIER ('=' expression)? ';'
+statement           -> expr_statement | if_statement | while_statement | for_statement | return_statement | block
+return_statement    -> 'return' expression? ';'
+for_statement       -> 'for' '(' (var_declaration | expr_statement | ';') expression? ';' expression? ')' statement
+while_statement     -> 'while' grouping statement
+if_statement        -> 'if' grouping statement ('else' statement)?
+expr_statement      -> expression ';'
+expression 	        -> assignment
+assignment          -> IDENTIFIER '=' (assignment | equality)
+logic_or            -> logic_and ('||' logic_and)*
+logic_and           -> equality ('&&' equality)*
+equality            -> comparison (('==' | '!=') comparison)*
+comparison          -> term (('>' | '>=' | '<' | '<=') term)*
+term                -> factor (('+' | '-') factor)*
+factor              -> unary (('*' | '/' | '%') unary)*
+unary		        -> ('-' | '!') unary | call
+call                -> primary ('(' arguments? ')')*
+arguments           -> expression (',' expression)*
+primary             -> grouping | literal | IDENTIFIER
+literal	   	        -> NUMBER | STRING | 'true' | 'false' | 'null'
+grouping	        -> '(' expression ')'
